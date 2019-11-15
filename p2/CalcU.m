@@ -1,5 +1,5 @@
 % º∆À„ƒ‹¡ø
-function u = calc_u(x)
+function u = CalcU(x)
 [K, ~, T] = size(x);
 u = zeros(T, 1);
 

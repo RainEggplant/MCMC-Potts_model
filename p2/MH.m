@@ -49,7 +49,7 @@ for t = 2:N
     end
 end
 
-u = calc_u(x(:, :, n_skip:N));
+u = CalcU(x(:, :, n_skip:N));
 u_mean = mean(u);
 disp(['E{u(x)} = ', num2str(u_mean)]);
 ln_z = LN_Z0 - u_mean * ONE_DIV_T;

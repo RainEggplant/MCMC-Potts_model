@@ -6,8 +6,8 @@ n_skip = round(N * SKIP_INITIAL_FACTOR);
 
 K = 20; % 20*20 网格
 q = 10; % 10 种取值
-ONE_DIV_T = 1.426; % 1/T 的值
-% ONE_DIV_T = [1.4; 1.4065; 1.413; 1.4195; 1.426];
+BETA = 1.4; % 1/T 的值
+% BETA = [1.4; 1.4065; 1.413; 1.4195; 1.426];
 LN_Z0 = 400 * log(10);
 
 %%
@@ -40,7 +40,7 @@ for t = 2:N
                 (up == candidate) - (down == candidate);
             
             % 计算接受概率
-            alpha = min(exp(-ONE_DIV_T * delta_u), 1);
+            alpha = min(exp(-BETA * delta_u), 1);
             if rand() <= alpha
                 % 成功接受
                 x(row, col, t) = candidate;
@@ -52,5 +52,5 @@ end
 u = calc_u(x(:, :, n_skip:N));
 u_mean = mean(u);
 disp(['E{u(x)} = ', num2str(u_mean)]);
-ln_z = LN_Z0 - u_mean * ONE_DIV_T;
+ln_z = LN_Z0 - u_mean * BETA;
 disp(['ln Z(T) = ', num2str(ln_z)]);

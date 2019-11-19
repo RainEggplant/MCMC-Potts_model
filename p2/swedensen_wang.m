@@ -2,23 +2,22 @@ function swedensen_wang(K, N_Q, BETA, N, BURN_IN_FACTOR)
 disp('Running Swedensen-Wang algorithm:');
 tic
 n_skip = round(N * BURN_IN_FACTOR); % 统计时跳过最前面样本的个数
-x = zeros(K, K, N);
-x(:, :, 1) = randi([1, N_Q], K, K);
+
+x = randi([1, N_Q], K, K); % 第一个样本随机取值
+u = zeros(N, 1); % 能量
+u(1) = calc_u(x);
 
 % 进行迭代
 for t = 2:N
-    x_t = x(:, :, t - 1);    
-    x_cluster = get_cluster(x_t, BETA);
+    x_cluster = get_cluster(x, BETA);
     labels = unique(x_cluster)';
     for l = labels
-        x_t(x_cluster == l) = randi([1, N_Q]);
+        x(x_cluster == l) = randi([1, N_Q]);
     end
-
-    x(:, :, t) = x_t;  
+    u(t) = calc_u(x);
 end
 
-u = calc_u(x(:, :, n_skip:N));
-u_mean = mean(u);
+u_mean = mean(u(n_skip:end));
 toc
 disp(['E{u(x)} = ', num2str(u_mean)]);
 % ln_z = LN_Z0 - u_mean * BETA;
@@ -134,5 +133,21 @@ histogram(u / (K ^ 2));
 %                 
 %                 labels(root_2) = root;
 %             end
+    end
+
+    % 计算能量
+    function u = calc_u(x)
+        u = 0;
+
+        for row = 1:K
+            for col = 1:K
+                if x(row, col) == x(row, mod(col, K) + 1) 
+                    u = u - 1;
+                end
+                if x(row, col) == x(mod(row, K) + 1, col) 
+                    u = u - 1;
+                end
+            end
+        end
     end
 end

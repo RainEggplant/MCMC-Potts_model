@@ -1,18 +1,16 @@
 % º∆À„ƒ‹¡ø
 function u = calc_u(x)
-[K, ~, T] = size(x);
-u = zeros(T, 1);
+[K, ~] = size(x);
+u = 0;
 
-for t = 1:T
-    for row = 1:K
-       for col = 1:K
-          if x(row, col, t) == x(row, mod(col, K) + 1, t) 
-             u(t) = u(t) - 1; 
-          end
-          if x(row, col, t) == x(mod(row, K) + 1, col, t) 
-             u(t) = u(t) - 1; 
-          end
-       end
+for row = 1:K
+    for col = 1:K
+        if x(row, col) == x(row, mod(col, K) + 1) 
+            u = u - 1;
+        end
+        if x(row, col) == x(mod(row, K) + 1, col) 
+            u = u - 1;
+        end
     end
 end
 end

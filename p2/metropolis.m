@@ -1,19 +1,10 @@
-clear;
-%% 常数、参数定义
-N = 100000; % 迭代次数
-SKIP_INITIAL_FACTOR = 0.3;
-n_skip = round(N * SKIP_INITIAL_FACTOR);
-
-K = 20; % 20*20 网格
-q = 10; % 10 种取值
-BETA = 1.4; % 1/T 的值
-% BETA = [1.4; 1.4065; 1.413; 1.4195; 1.426];
-LN_Z0 = 400 * log(10);
-
-%%
-x = zeros(K, K, N);
-x(:, :, 1) = randi([1, q], K, K);
-n_per_step = K ^ 2;
+function metropolis(K, N_Q, BETA, N, BURN_IN_FACTOR)
+disp('Running Metropolis algorithm:');
+tic;
+n_skip = round(N * BURN_IN_FACTOR); % 统计时跳过最前面样本的个数
+x = zeros(K, K, N); % 样本
+x(:, :, 1) = randi([1, N_Q], K, K); % 第一个样本随机取值
+n_per_step = K ^ 2; % 生成一个样本所需迭代次数
 
 % 进行迭代
 for t = 2:N
@@ -22,7 +13,7 @@ for t = 2:N
         row = randi([1, K]);
         col = randi([1, K]);
         cur = x(row, col, t);
-        candidate = randi([1, q]);
+        candidate = randi([1, N_Q]);
         if cur ~= candidate
             % 计算能量的改变
             left = x(mod(row - 2, K) + 1, col, t);
@@ -51,6 +42,8 @@ end
 
 u = calc_u(x(:, :, n_skip:N));
 u_mean = mean(u);
+toc
 disp(['E{u(x)} = ', num2str(u_mean)]);
-ln_z = LN_Z0 - u_mean * BETA;
-disp(['ln Z(T) = ', num2str(ln_z)]);
+% ln_z = LN_Z0 - u_mean * BETA;
+% disp(['ln Z(T) = ', num2str(ln_z)]);
+end

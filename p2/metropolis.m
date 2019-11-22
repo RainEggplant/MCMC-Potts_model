@@ -33,8 +33,8 @@ for t = 2:N
                 (up == candidate) - (down == candidate);
             
             % 计算接受概率
-            alpha = min(exp(-BETA * delta_u), 1);
-            if rand() <= alpha
+            % alpha = min(exp(-BETA * delta_u), 1);
+            if rand() <= exp(-BETA * delta_u)
                 % 成功接受
                 x(row, col) = candidate;
                 overall_delta_u = overall_delta_u + delta_u;

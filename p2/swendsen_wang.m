@@ -1,5 +1,5 @@
-function swedensen_wang(K, N_Q, BETA, N, BURN_IN_FACTOR)
-disp('Running Swedensen-Wang algorithm:');
+function swendsen_wang(K, N_Q, BETA, N, BURN_IN_FACTOR)
+disp('Running Swendsen-Wang algorithm:');
 tic
 n_skip = round(N * BURN_IN_FACTOR); % 统计时跳过最前面样本的个数
 

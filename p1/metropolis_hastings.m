@@ -1,4 +1,4 @@
-function [rho1, accept_rate1, rho2, accept_rate2] = ...
+function [rho, rho1, accept_rate1, rho2, accept_rate2] = ...
     metropolis_hastings(N, BURN_IN_FACTOR, mu, sigma, enable_output)
 %% 参数计算、函数定义
 P = @(x) mvnpdf(x, mu, sigma);
@@ -70,23 +70,23 @@ if enable_output
     disp(['二维高斯分布举荐-MH 估计相关系数： ' , num2str(rho2)]);
     disp(['二维高斯分布举荐-MH 接受比例：', num2str(accept_rate2)]);
     
-    % 均匀分布举荐与理论值作图对比
+    % 与理论值作图对比
     figure;
-    subplot(1, 2, 1);
-    histogram2(s0(1, n_skip:end), s0(2, n_skip:end));
+    subplot(1, 3, 1);
+    histogram2(s0(1, n_skip:end), s0(2, n_skip:end), 'FaceColor','flat');
     title('理论值');
-    subplot(1, 2, 2);
-    histogram2(s1(1, n_skip:end), s1(2, n_skip:end));
+    xlabel('x_1');
+    ylabel('x_2');
+    subplot(1, 3, 2);
+    histogram2(s1(1, n_skip:end), s1(2, n_skip:end), 'FaceColor','flat');
     title('均匀分布举荐-MH');
-
-    % 二维高斯分布举荐与理论值作图对比
-    figure;
-    subplot(1, 2, 1);
-    histogram2(s0(1, n_skip:end), s0(2, n_skip:end));
-    title('理论值');
-    subplot(1, 2, 2);
-    histogram2(s2(1, n_skip:end), s2(2, n_skip:end));
-    title('二维高斯分布举荐-MH ');
+    xlabel('x_1');
+    ylabel('x_2');
+    subplot(1, 3, 3);
+    histogram2(s2(1, n_skip:end), s2(2, n_skip:end), 'FaceColor','flat');
+    title('二维高斯分布举荐-MH');
+    xlabel('x_1');
+    ylabel('x_2');
     
     % 整体对比
     figure;
@@ -95,10 +95,14 @@ if enable_output
     title('理论分布与均匀分布举荐-MH 采样');
     plot(s0(1, n_skip:end), s0(2, n_skip:end), '.b');
     plot(s1(1, n_skip:end), s1(2, n_skip:end), '.r');
+    xlabel('x_1');
+    ylabel('x_2');
     subplot(1, 2, 2);
     hold on;
     title('理论分布与二维高斯分布举荐-MH 采样');
     plot(s0(1, n_skip:end), s0(2, n_skip:end), '.b');
     plot(s2(1, n_skip:end), s2(2, n_skip:end), '.r');
+    xlabel('x_1');
+    ylabel('x_2');
 end
 end

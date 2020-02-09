@@ -1,6 +1,5 @@
-function samc(K, N_Q, BETA, N, N_BURN_IN, SUBSAMPLE_STEP)
-disp('Running Self-adjusted mixture sampling algorithm:');
-tic;
+function [zeta_rec, u_index, u_rec] ...
+    = samc(K, N_Q, BETA, N, N_BURN_IN, SUBSAMPLE_STEP)
 N_SUBSAMPLE = ceil(N / SUBSAMPLE_STEP);
 N_PER_STEP = K ^ 2; % 生成一个样本所需迭代次数
 BETA_FACTOR = 0.8;
@@ -72,7 +71,6 @@ for t = 1:N
     end
     
     u = u + overall_delta_u;
-
     
     % update
     binary_update();
@@ -86,16 +84,6 @@ for t = 1:N
     end
         
 end
-
-toc;
-disp(['zeta = ', num2str(zeta(:)')]);
-figure;
-hold on;
-for l = 1:N_BETA
-    ksdensity(u_rec(l, ceil(N_BURN_IN / SUBSAMPLE_STEP / N_BETA):u_index(l)) / K ^ 2);
-end
-legend('1', '2', '3', '4', '5');
-disp('End running.')
 
 
     function rnd_label = random_label(label)

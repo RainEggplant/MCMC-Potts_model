@@ -1,7 +1,4 @@
-function metropolis(K, N_Q, BETA, N, BURN_IN_FACTOR)
-disp('Running Metropolis algorithm:');
-tic;
-n_skip = round(N * BURN_IN_FACTOR); % 统计时跳过最前面样本的个数
+function [u, x] = metropolis(K, N_Q, BETA, N)
 n_per_step = K ^ 2; % 生成一个样本所需迭代次数
 
 x = randi([1, N_Q], K, K); % 第一个样本随机取值
@@ -43,10 +40,4 @@ for t = 2:N
     end
     u(t) = u(t-1) + overall_delta_u;
 end
-
-u_mean = mean(u(n_skip:end));
-toc
-disp(['E{u(x)} = ', num2str(u_mean)]);
-% ln_z = LN_Z0 - u_mean * BETA;
-% disp(['ln Z(T) = ', num2str(ln_z)]);
 end

@@ -1,8 +1,4 @@
-function swendsen_wang(K, N_Q, BETA, N, BURN_IN_FACTOR)
-disp('Running Swendsen-Wang algorithm:');
-tic
-n_skip = round(N * BURN_IN_FACTOR); % 统计时跳过最前面样本的个数
-
+function [u, x] = swendsen_wang(K, N_Q, BETA, N)
 x = randi([1, N_Q], K, K); % 第一个样本随机取值
 u = zeros(N, 1); % 能量
 u(1) = calc_u(x);
@@ -17,13 +13,10 @@ for t = 2:N
     u(t) = calc_u(x);
 end
 
-u_mean = mean(u(n_skip:end));
-toc
-disp(['E{u(x)} = ', num2str(u_mean)]);
 % ln_z = LN_Z0 - u_mean * BETA;
 % disp(['ln Z(T) = ', num2str(ln_z)]);
-figure;
-histogram(u / (K ^ 2));
+% figure;
+% histogram(u / (K ^ 2));
 
 
     % 采用并查集算法 (Hoshen–Kopelman algorithm) 获取团簇
